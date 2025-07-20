@@ -1,4 +1,4 @@
-import { validateNonEmpty } from "@/app/services/client/validateNonEmpty";
+import { validateNonEmpty } from "@/app/services/client/validate_non_empty";
 
 export function appendFormdata<T extends Record<string, any>>(data: T): FormData {
     const formData = new FormData();
