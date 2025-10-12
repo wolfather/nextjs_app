@@ -1,5 +1,3 @@
-'use server';
-
 type SubmitLoginResponse = {
     success: boolean,
     data: unknown,
