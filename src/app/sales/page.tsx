@@ -1,3 +1,4 @@
+import { PromptForm } from "../components/PromptForm/PromptForm";
 import { fetchData } from "../services/client/fetch_data";
 import { formatCurrency } from "../services/client/format_currency";
 import { SalesData } from "./entities/sales.interface";
@@ -10,7 +11,15 @@ export default async function Sales() {
         method: 'GET',
     });
     const anualSales = salesData.slice(0, 12);
-
+    console.log('Sales Data:', anualSales);
+    const dryData = anualSales.map(sale => ({
+        //product: sale.product,
+        category: sale.category,
+        units_sold: sale.units_sold,
+        unit_price: sale.unit_price,
+        month: sale.month,
+    }));
+    console.log('Dry Sales Data:', dryData);
     const chartData = anualSales.map(sale => ({
         name: sale.category,
         sales: sale.units_sold,
@@ -27,7 +36,6 @@ export default async function Sales() {
         return acc;
     }, [] as { name: string; sales: number }[]);
 
-    console.log('groupItems', pieData);
     return (
         <div>
             <h1>Sales</h1>
@@ -48,7 +56,7 @@ export default async function Sales() {
                     </div>
                 ))}
             </div>
-
+            <PromptForm data={dryData} />
         </div>
     )
 }
