@@ -12,7 +12,7 @@ interface FetchDataParams {
     body?: unknown;
 }
 
-export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
+const getInitProps = (params: FetchDataParams): RequestInit => {
     const headers = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
@@ -27,6 +27,12 @@ export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse
     if (params.method !== 'GET' && params.body) {
         initProps = {...initProps, body: JSON.stringify(params.body)};
     }
+
+    return initProps;
+}
+
+export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
+    const initProps = getInitProps(params);
 
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/${apiDict[params.url]}`,
