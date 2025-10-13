@@ -2,14 +2,11 @@
 import { db } from "@/app/services/client/firebaseconfig"
 import { collection, onSnapshot, query, orderBy, limit, startAfter, } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
-import { Post } from "../entities/post.interface";
-
-interface PostListEntity {
-    posts: Post[];
-}
+import { PostEntity } from "../entities/post.interface";
+import { PostListEntity } from "../entities/postList.interface";
 
 export function PostList({ posts }: PostListEntity) {
-    const [list, setList] = useState<Post[]>(posts);
+    const [list, setList] = useState<PostEntity[]>(posts);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [cursors, setCursors] = useState<any[]>([]);
