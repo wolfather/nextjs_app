@@ -1,19 +1,22 @@
 'use client';
 
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { AppStore, store } from './app/redux/store/store';
 import { setSessionValues, User } from './app/redux/slice/session';
 
+type Props = {
+  children: ReactNode
+  initialReduxState?: any
+}
 export default function StoreProvider({
   children,
-}: {
-  children: React.ReactNode
-}) {
-  const storeRef = useRef<AppStore>(undefined)
+  initialReduxState,
+}: Props) {
+  const storeRef = useRef<AppStore | undefined>(undefined);
+
   if (!storeRef.current) {
-    // Create the store instance the first time this renders
-    storeRef.current = store();
+    storeRef.current = store(initialReduxState || {});
     storeRef.current.dispatch(setSessionValues({user: {} as User}))
   }
 
