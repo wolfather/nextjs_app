@@ -21,4 +21,5 @@ export interface SalesData {
     customer_satisfaction: number;
     returns: number;
     delivery_time_avg_days: number;
+    month: number;
 }
