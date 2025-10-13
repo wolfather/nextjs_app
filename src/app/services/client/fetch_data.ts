@@ -12,15 +12,15 @@ interface FetchDataParams {
     body?: unknown;
 }
 
-const getInitProps = (params: FetchDataParams): RequestInit => {
+const getInitProps = async(params: FetchDataParams): Promise<RequestInit> => {
     const headers = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.API_TOKEN as string}`,
     };
 
     let initProps: RequestInit = {
         cache: 'no-store',
-        method: params.method,
+        method: params.method || 'GET',
         headers,
     };
 
@@ -32,12 +32,14 @@ const getInitProps = (params: FetchDataParams): RequestInit => {
 }
 
 export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
-    const initProps = getInitProps(params);
+    const initProps = await getInitProps(params);
+    const url = `${process.env.BASE_URL as string}/${apiDict[params.url]}`;
+    console.log('Fetching URL:', url);
+    if (!url) {
+        throw new Error('URL is required');
+    }
 
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${apiDict[params.url]}`,
-        initProps
-    );
+    const response = await fetch(url, initProps);
 
     const data: T = await response.json();
 

@@ -13,9 +13,13 @@ function generateSales(): SalesData {
     const pix = faker.number.int({ min: 0, max: units_sold - credit_card });
     const cash = units_sold - credit_card - pix;
 
+    const dateObj = faker.date.past();
+    const dateStr = dateObj.toISOString().split('T')[0];
+    const month = dateObj.getMonth() + 1;
+
     return {
         id: faker.string.uuid(),
-        date: faker.date.past().toISOString().split('T')[0],
+        date: dateStr,
         region: faker.helpers.arrayElement(["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"]),
         store: faker.company.name(),
         category: faker.helpers.arrayElement(["Eletrônicos", "Eletrodomésticos", "Móveis", "Roupas", "Brinquedos"]),
@@ -31,6 +35,7 @@ function generateSales(): SalesData {
         customer_satisfaction: Number(faker.number.float({ min: 1, max: 5, fractionDigits: 1 })),
         returns: faker.number.int({ min: 0, max: 5 }),
         delivery_time_avg_days: Number(faker.number.float({ min: 0, max: 10, fractionDigits: 1 })),
+        month,
     };
 }
 
