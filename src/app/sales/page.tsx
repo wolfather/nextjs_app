@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { PromptForm } from "../components/PromptForm/PromptForm";
 import { fetchData } from "../services/client/fetch_data";
 import { formatCurrency } from "../services/client/format_currency";
@@ -16,11 +17,11 @@ export default async function Sales() {
         //product: sale.product,
         category: sale.category,
         units_sold: sale.units_sold,
-        unit_price: sale.unit_price,
+        unit_price: formatCurrency(sale.unit_price),
         month: sale.month,
     }));
 
-    const chartData = anualSales.map(sale => ({
+    const barData = anualSales.map(sale => ({
         name: sale.category,
         sales: sale.units_sold,
         month: sale.month,
@@ -41,7 +42,7 @@ export default async function Sales() {
             <h1 className="text-3xl from-neutral-800 font-semibold">Sales</h1>
             <section className="flex grid-cols-2 gap-4 h-[300px]">
                 <div className="min-h-[300px] min-w-[40%]">
-                    {chartData.length > 0 && <CustomBarChart data={chartData} />}
+                    {barData.length > 0 && <CustomBarChart data={barData} />}
                 </div>
                 
                 <div className="min-h-[300px] min-w-[40%]">
