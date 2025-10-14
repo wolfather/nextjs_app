@@ -54,7 +54,7 @@ const getExternalInitProps = async(params: FetchDataParams): Promise<RequestInit
 export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
     const initProps = await getInitProps(params);
     const url = `${process.env.BASE_URL as string}/${apiDict[params.url]}`;
-    console.log('Fetching URL:', url);
+    
     if (!url) {
         throw new Error('URL is required');
     }
@@ -74,21 +74,19 @@ export async function fetchExternalData<T>(params: FetchDataParams): Promise<Api
     const initProps = await getInitProps(params);
     const url = params.externalUrl!;
     console.log('Fetching URL:', url);
-    if (!url) {
-        throw new Error('URL is required');
-    }
 
+    const body = {
+        model: "llama3",
+        prompt: `analise os dados de vendas: ${JSON.stringify((params.body as any).data)}, e me diga qual é o produto que melhor vendeu.`,
+        stream: false,
+        //system: "Instruções do sistema",
+        //options: { temperature: 0.8 },
+    }
     const response = await fetch(url, {
         headers: {'Content-Type': 'application/json'},
-        cache: 'no-store',
+        //cache: 'no-store',
         method: "POST",
-        body: JSON.stringify({
-            prompt: JSON.parse(params.body as string).prompt,
-            data: JSON.parse(params.body as string).data,
-            system: "Instruções do sistema",
-            model: "llama3",
-            options: { temperature: 0.8 },
-        }),
+        body: JSON.stringify(body),
     });
 
     const data: T = await response.json();

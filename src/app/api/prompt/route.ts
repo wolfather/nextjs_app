@@ -4,15 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, _: NextResponse) {
     const { prompt, data: promptData } = await req.json();
 
-    let parsedPromptData = promptData;
-    if (typeof promptData === "string") {
-      try {
-        parsedPromptData = JSON.parse(promptData);
-      } catch {
-        console.warn("⚠️ promptData já é uma string JSON válida, não foi parseada novamente.");
-      }
-    }
-    const parsedData = JSON.stringify(parsedPromptData, null, 2);
+    const parsedData = JSON.stringify(promptData);
 
     const body = {
         prompt: `Analisando os seguintes dados de vendas (em formato JSON):\n\n${parsedData}\n\nAgora, ${prompt}`,
@@ -32,7 +24,8 @@ export async function POST(req: NextRequest, _: NextResponse) {
         );
     
         const data = await response.json();
-        return NextResponse.json(data);
+        console.log('Response from external API:', data);
+        return NextResponse.json({debug: 'log', data});
     } catch (error) {
         console.error('Error in POST /api/prompt:', error);
         return NextResponse.json({ error: ((error as Error).message || 'Internal Server Error') }, { status: 500 });
