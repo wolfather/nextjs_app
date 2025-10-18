@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { sessionReducer } from "../slice/session";
 import { useDispatch, useSelector, useStore } from "react-redux";
-
+import { salesFilterReducer } from "../slice/salesFilter";
 
 export const store = (initialState = {}) => {
     return configureStore({
         reducer: {
-            sessionReducer
+            sessionReducer,
+            salesFilterReducer,
         },
         preloadedState: initialState,
         // middleware: (getDefaultMiddleware) =>

@@ -34,6 +34,9 @@ export default async function RootLayout({
         <AppProviders session={session}>
           <TopHeader />
           {children}
+          <footer className="bg-gray-700 row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+            <span className="text-gray-300">© 2025 My App</span>
+          </footer>
         </AppProviders>
       </body>
     </html>

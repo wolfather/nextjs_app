@@ -11,6 +11,7 @@ interface FetchDataParams {
     url: keyof typeof apiDict;
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: unknown;
+    queryString?: unknown[];
 }
 
 const getInitProps = async(params: FetchDataParams): Promise<RequestInit> => {
@@ -53,7 +54,7 @@ const getExternalInitProps = async(params: FetchDataParams): Promise<RequestInit
 
 export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
     const initProps = await getInitProps(params);
-    const url = `${process.env.BASE_URL as string}/${apiDict[params.url]}`;
+    const url = `${process.env.BASE_URL || process.env.NEXT_PUBLIC_BASE_URL as string}/${apiDict[params.url]}`;
     
     if (!url) {
         throw new Error('URL is required');
@@ -61,10 +62,21 @@ export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse
 
     const response = await fetch(url, initProps);
 
-    const data: T = await response.json();
+    const rawData: unknown = await response.json();
+
+    let filteredData = Array.isArray(rawData) ? rawData : [rawData];
+    if(params.queryString !== undefined && Array.isArray(rawData)) {
+        filteredData = rawData.filter(item => {
+            return params.queryString?.every((obj) => {
+                const [k, v] = Object.entries(obj as string)[0];
+
+                return String(item[k]).toLowerCase() === String(v).toLowerCase();
+            });
+        });
+    }
 
     return {
-        data,
+        data: filteredData as T,
         status: response.status,
         statusText: response.statusText,
     };
@@ -84,7 +96,7 @@ export async function fetchExternalData<T>(params: FetchDataParams): Promise<Api
     }
     const response = await fetch(url, {
         headers: {'Content-Type': 'application/json'},
-        //cache: 'no-store',
+        cache: 'no-store',
         method: "POST",
         body: JSON.stringify(body),
     });

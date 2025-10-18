@@ -1,52 +1,62 @@
-import { useMemo } from "react";
+import { getServerSession } from "next-auth";
 import { PromptForm } from "../components/PromptForm/PromptForm";
 import { fetchData } from "../services/client/fetch_data";
 import { formatCurrency } from "../services/client/format_currency";
-import { SalesData } from "./entities/sales.interface";
+import type { SalesData, SalesPageParams } from "./entities/sales.interface";
 
 import { CustomBarChart, CustomPieChart } from "@/components/custom/Chart/Charts.ts";
+import { SalesFilter } from "@/components/SalesFilter/SalesFilter";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-export default async function Sales() {
+export default async function Sales({searchParams}: SalesPageParams) {
+    const session = await getServerSession(authOptions);
+    const resolvedParams = await searchParams;
+
+    const qs = Object
+                .entries(resolvedParams ?? {})
+                .map(([k, v]) => {
+                    return v !== undefined ? {[k]: v} : {}
+                })
+
+
     const { data: salesData } = await fetchData<SalesData[]>({
         url: 'getSales',
         method: 'GET',
+        queryString: qs,
     });
+
     const anualSales = salesData.slice(0, 12);
 
-    const dryData = anualSales.map(sale => ({
-        //product: sale.product,
+    const dryData = salesData.map(sale => ({
+        id: sale.id,
+        year: sale.year,
+        product: sale.product,
         category: sale.category,
         units_sold: sale.units_sold,
         unit_price: formatCurrency(sale.unit_price),
         month: sale.month,
-    }));
+    }))
+    .filter(item => item.year === '2025')
+    .sort((a, b) => a.month - b.month);
 
-    const barData = anualSales.map(sale => ({
-        name: sale.category,
-        sales: sale.units_sold,
-        month: sale.month,
-    }));
 
-    const pieData = anualSales.reduce((acc, sale) => {
-        const existingCategory = acc.find(item => item.name === sale.category);
-        if (existingCategory) {
-            existingCategory.sales += sale.units_sold;
-        } else {
-            acc.push({ name: sale.category, sales: sale.units_sold });
-        }
-        return acc;
-    }, [] as { name: string; sales: number }[]);
+    if (session === null) {
+        return (
+            <div>Não autorizado</div>
+        );
+    }
 
     return (
         <div>
             <h1 className="text-3xl from-neutral-800 font-semibold">Sales</h1>
+
+            <SalesFilter />
             <section className="flex grid-cols-2 gap-4 h-[300px]">
-                <div className="min-h-[300px] min-w-[40%]">
-                    {barData.length > 0 && <CustomBarChart data={barData} />}
+                <div className="min-h-[300px] min-w-[45%]">
+                    <CustomBarChart data={anualSales} />
                 </div>
-                
-                <div className="min-h-[300px] min-w-[40%]">
-                    {pieData.length > 0 && <CustomPieChart data={pieData} />}
+                <div className="min-h-[300px] min-w-[45%]">
+                    <CustomPieChart data={anualSales} />
                 </div>
             </section>
 

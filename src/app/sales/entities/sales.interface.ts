@@ -6,6 +6,7 @@ export interface PaymentMethods {
 export interface SalesData {
     id: string;
     date: string;
+    year: string;
     region: string;
     store: string;
     category: string;
@@ -22,4 +23,13 @@ export interface SalesData {
     returns: number;
     delivery_time_avg_days: number;
     month: number;
+}
+
+export type SalesFilterProps = {
+    year: string,
+    category: string,
+}
+
+export type SalesPageParams = {
+    searchParams ?: Promise<Record<string, string | string[] | undefined>>;
 }

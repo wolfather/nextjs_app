@@ -19,6 +19,7 @@ function generateSales(): SalesData {
 
     return {
         id: faker.string.uuid(),
+        year: dateStr.split('-')[0],
         date: dateStr,
         region: faker.helpers.arrayElement(["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"]),
         store: faker.company.name(),
