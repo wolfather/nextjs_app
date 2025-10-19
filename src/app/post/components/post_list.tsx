@@ -96,7 +96,9 @@ export function PostList({ posts }: PostListEntity) {
     return (
         <section>
             {list.map(item => (
-                <div key={item.id} className="flex justify-between">
+                <div 
+                    key={item.id} 
+                    className="max-w-[250px] bg-gray-200 rounded-lg mb-2 px-3 py-4 flex justify-between">
                     {item.public && <span>pública</span>}
                     <p>{item.text}</p>
                 </div>
