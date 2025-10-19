@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "./globals.css";
 
 import { TopHeader } from "./components/Top_Header/Top_Header";
 import { getServerSession } from "next-auth";
@@ -7,6 +6,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { AppProviders } from "./providers/app_providers";
 import { BottomFooter } from "./components/Bottom_Footer/BottomFooter";
 import { geistSans, geistMono } from "@/fonts/fonts";
+import { NextIntlClientProvider } from 'next-intl'
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,15 +22,17 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   return (
     <html lang="en">
-      <AppProviders session={session}>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <div className="flex flex-col h-screen">
-              <TopHeader />
-              {children}
-              <BottomFooter />
-          </div>
-        </body>
-      </AppProviders>
+      <NextIntlClientProvider>
+        <AppProviders session={session}>
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <div className="flex flex-col h-screen">
+                <TopHeader />
+                {children}
+                <BottomFooter />
+            </div>
+          </body>
+        </AppProviders>
+      </NextIntlClientProvider>
     </html>
   );
 }

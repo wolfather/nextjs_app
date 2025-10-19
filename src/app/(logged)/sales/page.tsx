@@ -8,13 +8,15 @@ import { SalesFilter } from "@/app/components/SalesFilter/SalesFilter";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { CustomBarChart, CustomPieChart } from "@/app/components/custom/Chart/Charts";
+import { getTranslations } from 'next-intl/server';
 
-export default async function Sales({searchParams}: SalesPageParams) {
+export default async function SalesPage({searchParams}: SalesPageParams) {
     const session = await getServerSession(authOptions);
+    const t = await getTranslations ('SalesPage');
     
     const resolvedParams = await searchParams;
 
-    const qs = Object
+    const queryString = Object
             .entries(resolvedParams ?? {})
             .map(([k, v]) => {
                 return v !== undefined ? {[k]: v} : {}
@@ -24,7 +26,7 @@ export default async function Sales({searchParams}: SalesPageParams) {
     const { data: salesData } = await fetchData<SalesData[]>({
         url: 'getSales',
         method: 'GET',
-        queryString: qs,
+        queryString,
     });
 
     const anualSales = salesData.slice(-12);
@@ -48,7 +50,7 @@ export default async function Sales({searchParams}: SalesPageParams) {
 
     return (
         <div className="flex-1">
-            <h1 className="text-3xl from-neutral-800 font-semibold">Sales</h1>
+            <h1 className="text-3xl from-neutral-800 font-semibold">{t('title')}</h1>
 
             <SalesFilter />
             <section className="flex grid-cols-2 gap-4 h-[300px]">
@@ -71,5 +73,5 @@ export default async function Sales({searchParams}: SalesPageParams) {
             </div> */}
             <PromptForm data={dryData} />
         </div>
-    )
+    );
 }

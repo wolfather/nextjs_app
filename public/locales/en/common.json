@@ -1,0 +1,27 @@
+{
+    "HomePage": {
+        "title": "Welcome to home page"
+    },
+    "SalesPage": {
+        "title": "Sales",
+        "filter": {
+            "drop_down": {
+                "all_categories": "All categories",
+                "all_period": "All period"
+            }
+        }
+    },
+    "NotFound": {
+        "title": "Page not found",
+        "message": "Could not find requested resource"
+    },
+    "common": {
+        "button": {
+            "submit": "submit",
+            "filter": "filter",
+            "clear": "clear",
+            "loading": "loading",
+            "back_home": "back to Home"
+        }
+    }
+}
