@@ -33,25 +33,6 @@ const getInitProps = async(params: FetchDataParams): Promise<RequestInit> => {
     return initProps;
 }
 
-const getExternalInitProps = async(params: FetchDataParams): Promise<RequestInit> => {
-    const headers = {
-        'Content-Type': 'application/json',
-        //Authorization: `Bearer ${process.env.API_TOKEN as string}`,
-    };
-
-    let initProps: RequestInit = {
-        cache: 'no-store',
-        method: params.method || 'GET',
-        headers,
-    };
-
-    if (params.method !== 'GET' && params.body) {
-        initProps = {...initProps, body: JSON.stringify(params.body)};
-    }
-
-    return initProps;
-}
-
 export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
     const initProps = await getInitProps(params);
     const url = `${process.env.BASE_URL || process.env.NEXT_PUBLIC_BASE_URL as string}/${apiDict[params.url]}`;
@@ -83,12 +64,13 @@ export async function fetchData<T>(params: FetchDataParams): Promise<ApiResponse
 }
 
 export async function fetchExternalData<T>(params: FetchDataParams): Promise<ApiResponse<T>> {
-    const initProps = await getInitProps(params);
+    // const initProps = await getInitProps(params);
     const url = params.externalUrl!;
     console.log('Fetching URL:', url);
 
     const body = {
         model: "llama3",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         prompt: `analise os dados de vendas: ${JSON.stringify((params.body as any).data)}, e me diga qual é o produto que melhor vendeu.`,
         stream: false,
         //system: "Instruções do sistema",

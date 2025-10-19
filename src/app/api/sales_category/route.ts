@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { data } from "@/mocks/handlers";
 
-export async function GET(_: Request) {
+export async function GET() {
     const setCategories = new Set();
     data.forEach(d => setCategories.add(d.category));
     

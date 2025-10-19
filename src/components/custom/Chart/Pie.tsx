@@ -1,9 +1,9 @@
 'use client';
 
-import { SalesData } from "@/app/sales/entities/sales.interface";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { SalesData } from "@/app/(logged)/sales/entities/sales.interface";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend } from "@/components/ui/chart";
 import { useMemo } from "react";
-import { PieChart, Pie, Cell, Legend } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 
 type PieChartData = {
     data: SalesData[];
@@ -56,7 +56,7 @@ export function CustomPieChart({data}: PieChartData) {
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <ChartLegend content={<ChartLegendContent />} />
                     <Pie data={pieData} dataKey="sales" nameKey="name" outerRadius={120}>
-                        {pieData.map((_ : any, index: number) => (
+                        {pieData.map((_, index: number) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length] || '#ccc'} />
                         ))}
                     </Pie>

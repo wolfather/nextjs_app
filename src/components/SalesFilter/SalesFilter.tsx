@@ -1,7 +1,7 @@
 'use client';
 
 import { useChangeQueryString } from "@/app/hooks/useChangeQueryString";
-import { SalesFilterProps } from "@/app/sales/entities/sales.interface";
+import { SalesFilterProps } from "@/app/(logged)/sales/entities/sales.interface";
 import { fetchData } from "@/app/services/client/fetch_data";
 import { ChangeEvent, memo, useCallback, useEffect, useState } from "react";
 
@@ -27,7 +27,7 @@ function SalesFilterComponent() {
 
     useEffect(() => {
         fetchSelectValues();
-    }, []);
+    }, [fetchSelectValues]);
 
     if(loading) {
         <span>carregando...</span>

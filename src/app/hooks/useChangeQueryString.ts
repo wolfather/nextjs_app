@@ -1,12 +1,12 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, FormEvent } from "react";
-import { SalesFilterProps } from "../sales/entities/sales.interface";
 
-export function useChangeQueryString<T>() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useChangeQueryString<T extends Record<string, any>>() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathName = usePathname();
-    const [filters, setFilters] = useState<SalesFilterProps>({year: '', category: ''});
+    const [filters, setFilters] = useState<T>({} as T);
     const params = useRef<URLSearchParams>(new URLSearchParams(searchParams.toString()));
 
     const onChangeUrlHandler = (e: FormEvent) => {
@@ -26,18 +26,18 @@ export function useChangeQueryString<T>() {
     };
 
     const onResetHandler = () => {
-        setFilters({year: '', category: ''});
+        setFilters({} as T);
         router.push(pathName);
     };
 
     useEffect(() => {
-        const filtersValues: SalesFilterProps = {year: '', category: ''};
+        const filtersValues = {} as T;
 
         params.current
             .forEach((value, key) => {
-                filtersValues[key as keyof SalesFilterProps] = value;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (filtersValues as any)[key] = value;
             });
-            
         setFilters(filtersValues);
     }, []);
 

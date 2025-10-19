@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, _: NextResponse) {
+export async function POST(req: NextRequest) {
     const { prompt, data: promptData } = await req.json();
 
     const parsedData = JSON.stringify(promptData);

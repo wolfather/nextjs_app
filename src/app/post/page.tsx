@@ -1,4 +1,4 @@
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { FormPost } from './components/form_post';
 import { db } from '../services/client/firebaseconfig';
 import { PostList } from './components/post_list';
