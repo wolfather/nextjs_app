@@ -7,7 +7,7 @@ import { setSessionValues, User } from './app/redux/slice/session';
 
 type Props = {
   children: ReactNode
-  initialReduxState?: any
+  initialReduxState?: unknown
 }
 export default function StoreProvider({
   children,

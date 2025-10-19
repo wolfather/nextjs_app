@@ -1,15 +1,17 @@
 import { getServerSession } from "next-auth";
-import { PromptForm } from "../components/PromptForm/PromptForm";
-import { fetchData } from "../services/client/fetch_data";
-import { formatCurrency } from "../services/client/format_currency";
+import { PromptForm } from "../../components/PromptForm/PromptForm";
+import { fetchData } from "../../services/client/fetch_data";
+import { formatCurrency } from "../../services/client/format_currency";
 import type { SalesData, SalesPageParams } from "./entities/sales.interface";
 
 import { CustomBarChart, CustomPieChart } from "@/components/custom/Chart/Charts.ts";
 import { SalesFilter } from "@/components/SalesFilter/SalesFilter";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export default async function Sales({searchParams}: SalesPageParams) {
     const session = await getServerSession(authOptions);
+    
     const resolvedParams = await searchParams;
 
     const qs = Object
@@ -25,7 +27,7 @@ export default async function Sales({searchParams}: SalesPageParams) {
         queryString: qs,
     });
 
-    const anualSales = salesData.slice(0, 12);
+    const anualSales = salesData.slice(-12);
 
     const dryData = salesData.map(sale => ({
         id: sale.id,
@@ -41,9 +43,7 @@ export default async function Sales({searchParams}: SalesPageParams) {
 
 
     if (session === null) {
-        return (
-            <div>Não autorizado</div>
-        );
+        redirect('/login');
     }
 
     return (

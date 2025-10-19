@@ -1,6 +1,6 @@
 'use client'
 import { db } from "@/app/services/client/firebaseconfig"
-import { collection, onSnapshot, query, orderBy, limit, startAfter, } from "firebase/firestore"
+import { collection, onSnapshot, query, orderBy, limit, startAfter, QueryDocumentSnapshot, } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import { PostEntity } from "../entities/post.interface";
 import { PostListEntity } from "../entities/postList.interface";
@@ -9,7 +9,7 @@ export function PostList({ posts }: PostListEntity) {
     const [list, setList] = useState<PostEntity[]>(posts);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
-    const [cursors, setCursors] = useState<any[]>([]);
+    const [cursors, setCursors] = useState<QueryDocumentSnapshot[]>([]);
 
     useEffect(() => {
         setLoading(true);
@@ -26,6 +26,7 @@ export function PostList({ posts }: PostListEntity) {
                 created_at: doc.data().created_at.seconds,
                 public: doc.data().public,
             }));
+            console.log(snap.docs[snap.docs.length -1])
 
             setList(updatePosts);
             setCursors([snap.docs[snap.docs.length - 1]]);
@@ -64,7 +65,7 @@ export function PostList({ posts }: PostListEntity) {
 
             setList(updatePosts);
             
-            setCursors((prev: any[]) => {
+            setCursors(prev => {
                 const newCursors = [...prev];
                 newCursors[pageIndex] = snap.docs[snap.docs.length -1];
                 return newCursors;
@@ -94,7 +95,7 @@ export function PostList({ posts }: PostListEntity) {
 
     return (
         <section>
-            {list.map((item: any) => (
+            {list.map(item => (
                 <div key={item.id} className="flex justify-between">
                     {item.public && <span>pública</span>}
                     <p>{item.text}</p>

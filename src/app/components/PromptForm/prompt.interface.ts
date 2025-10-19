@@ -1,6 +1,6 @@
 
 export interface PromptProps {
-    data: any;
+    data: unknown;
 }
 
 export interface IAResponse {

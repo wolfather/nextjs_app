@@ -1,11 +1,12 @@
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { randomBytes, randomUUID } from "crypto";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
     debug: true,
     session: {
         generateSessionToken: () => randomUUID?.() ?? randomBytes(32).toString('hex'),
+        strategy: 'jwt',
     },
     providers: [
         GoogleProvider({
@@ -21,6 +22,9 @@ export const authOptions = {
             
         }),
     ],
+    pages: {
+        signIn: '/login'
+    },
     secret: process.env.NEXTAUTH_SECRET as string,
 };
 

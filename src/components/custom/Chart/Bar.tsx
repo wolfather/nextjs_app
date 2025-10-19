@@ -1,6 +1,6 @@
 'use client';
 
-import { SalesData } from "@/app/sales/entities/sales.interface";
+import { SalesData } from "@/app/(logged)/sales/entities/sales.interface";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 
 import { useMemo } from "react";

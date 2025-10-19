@@ -1,4 +1,4 @@
-import { SalesData } from '@/app/sales/entities/sales.interface';
+import { SalesData } from '@/app/(logged)/sales/entities/sales.interface';
 import { faker } from '@faker-js/faker';
 
 function generateSales(): SalesData {
