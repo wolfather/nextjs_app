@@ -1,0 +1,27 @@
+{
+    "HomePage": {
+        "title": "Bem vindo Home título"
+    },
+    "SalesPage": {
+        "title": "Vendas",
+        "filter": {
+            "drop_down": {
+                "all_categories": "Todas categorias",
+                "all_period": "Todo o período"
+            }
+        }
+    },
+    "NotFound": {
+        "title": "Página não encontrada",
+        "message": "Não foi possível encontrar a página requisitada"
+    },
+    "common": {
+        "button": {
+            "submit": "enviar",
+            "filter": "filtrar",
+            "clear": "limpar",
+            "loading": "carregando",
+            "back_home": "Voltar para a Home"
+        }
+    }
+}

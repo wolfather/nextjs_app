@@ -4,11 +4,13 @@ import { clearString } from "@/app/services/client/clear_string";
 import { fetchExternalData } from "@/app/services/client/fetch_data";
 import { ChangeEvent, memo, useCallback, useState } from "react";
 import { IAResponse, PromptProps } from "./prompt.interface";
+import { useTranslations } from "next-intl";
 
 function PromptFormComponent({ data }: PromptProps) {
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<string>('');
+    const t = useTranslations('common');
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
@@ -48,7 +50,7 @@ function PromptFormComponent({ data }: PromptProps) {
                     disabled={!inputValue.trim() || data === null || loading}
                     type="submit" 
                     className="place-self-end mt-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                        {loading ? 'Loading...' : 'Submit'}
+                    {t(`button.${loading ? 'loading' : 'submit'}`)}
                 </button>
             </form>
         </div>
