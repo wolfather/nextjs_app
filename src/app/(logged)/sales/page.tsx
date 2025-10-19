@@ -4,10 +4,10 @@ import { fetchData } from "../../services/client/fetch_data";
 import { formatCurrency } from "../../services/client/format_currency";
 import type { SalesData, SalesPageParams } from "./entities/sales.interface";
 
-import { CustomBarChart, CustomPieChart } from "@/components/custom/Chart/Charts.ts";
-import { SalesFilter } from "@/components/SalesFilter/SalesFilter";
+import { SalesFilter } from "@/app/components/SalesFilter/SalesFilter";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { CustomBarChart, CustomPieChart } from "@/app/components/custom/Chart/Charts";
 
 export default async function Sales({searchParams}: SalesPageParams) {
     const session = await getServerSession(authOptions);
@@ -15,10 +15,10 @@ export default async function Sales({searchParams}: SalesPageParams) {
     const resolvedParams = await searchParams;
 
     const qs = Object
-                .entries(resolvedParams ?? {})
-                .map(([k, v]) => {
-                    return v !== undefined ? {[k]: v} : {}
-                })
+            .entries(resolvedParams ?? {})
+            .map(([k, v]) => {
+                return v !== undefined ? {[k]: v} : {}
+            });
 
 
     const { data: salesData } = await fetchData<SalesData[]>({
@@ -47,7 +47,7 @@ export default async function Sales({searchParams}: SalesPageParams) {
     }
 
     return (
-        <div>
+        <div className="flex-1">
             <h1 className="text-3xl from-neutral-800 font-semibold">Sales</h1>
 
             <SalesFilter />

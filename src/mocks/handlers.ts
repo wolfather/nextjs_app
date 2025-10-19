@@ -40,4 +40,4 @@ function generateSales(): SalesData {
     };
 }
 
-export const data: SalesData[] = Array.from({ length: 40 }).map(generateSales);
+export const data: SalesData[] = Array.from({ length: 60 }).map(generateSales);

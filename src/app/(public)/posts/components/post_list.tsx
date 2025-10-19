@@ -1,5 +1,5 @@
 'use client'
-import { db } from "@/app/services/client/firebaseconfig"
+import { db } from "@/app/services/client/firebaseconfig";
 import { collection, onSnapshot, query, orderBy, limit, startAfter, QueryDocumentSnapshot, } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import { PostEntity } from "../entities/post.interface";

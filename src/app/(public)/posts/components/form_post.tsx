@@ -1,6 +1,6 @@
 'use client'
 
-import { db } from '../../services/client/firebaseconfig';
+import { db } from '../../../services/client/firebaseconfig';
 import { addDoc, collection } from "firebase/firestore";
 import { FormEvent, useState } from "react";
 

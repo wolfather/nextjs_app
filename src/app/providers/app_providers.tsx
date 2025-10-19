@@ -8,7 +8,7 @@ import type { Session } from "next-auth";
 
 type Props = {
     children: ReactNode,
-    session: Session,
+    session: Session | null,
 }
 export function AppProviders({children, session}: Props) {
     
