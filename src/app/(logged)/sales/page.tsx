@@ -13,7 +13,6 @@ import { getTranslations } from 'next-intl/server';
 export default async function SalesPage({searchParams}: SalesPageParams) {
     const session = await getServerSession(authOptions);
     const t = await getTranslations ('SalesPage');
-    
     const resolvedParams = await searchParams;
 
     const queryString = Object

@@ -11,12 +11,11 @@ type Props = {
     session: Session | null,
 }
 export function AppProviders({children, session}: Props) {
-    
     return (
         <SessionProvider session={session}>
             <ReduxProvider store={store() || {}}>
                 {children}
             </ReduxProvider>
         </SessionProvider>
-    )
+    );
 }

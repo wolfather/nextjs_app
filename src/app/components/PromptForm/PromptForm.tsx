@@ -2,8 +2,8 @@
 
 import { clearString } from "@/app/services/client/clear_string";
 import { fetchExternalData } from "@/app/services/client/fetch_data";
-import { ChangeEvent, memo, useCallback, useState } from "react";
-import { IAResponse, PromptProps } from "./prompt.interface";
+import { type ChangeEvent, memo, useCallback, useState } from "react";
+import { IAResponse, type PromptProps } from "./prompt.interface";
 import { useTranslations } from "next-intl";
 
 function PromptFormComponent({ data }: PromptProps) {
@@ -38,7 +38,7 @@ function PromptFormComponent({ data }: PromptProps) {
 
     return (
         <div className="max-w-[360px]">
-            <pre className="font-normal text-[1rem]">{response}</pre>
+            <div className="h-[120px] overflow-y-auto font-normal text-[1rem]">{response}</div>
             <form onSubmit={handleSubmit}>
                 <textarea
                     className="w-full h-40 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

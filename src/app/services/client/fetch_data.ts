@@ -74,7 +74,7 @@ export async function fetchExternalData<T>(params: FetchDataParams): Promise<Api
         prompt: `analise os dados de vendas: ${JSON.stringify((params.body as any).data)}, e me diga qual é o produto que melhor vendeu.`,
         stream: false,
         //system: "Instruções do sistema",
-        //options: { temperature: 0.8 },
+        options: { temperature: 0.8 },
     }
     const response = await fetch(url, {
         headers: {'Content-Type': 'application/json'},
