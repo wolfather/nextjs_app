@@ -3,7 +3,7 @@
 import { useChangeQueryString } from "@/app/hooks/useChangeQueryString";
 import { SalesFilterProps } from "@/app/(logged)/sales/entities/sales.interface";
 import { fetchData } from "@/app/services/client/fetch_data";
-import { ChangeEvent, memo, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, memo, use, useCallback, useEffect, useState } from "react";
 import { useTranslations } from 'next-intl'
 
 type CategoriesList = string[];
@@ -14,9 +14,13 @@ function SalesFilterComponent() {
     } = useChangeQueryString<SalesFilterProps>();
     const t = useTranslations();
 
+    // const { data: categories } = use(fetchData<CategoriesList>({
+    //     url: 'getSalesCategories',
+    //     method: 'GET',
+    // }))
+    
     const [categories, setCategories] = useState<CategoriesList>([]);
     const [loading, setLoading] = useState(false);
-
     const fetchSelectValues = useCallback(() => {
         setLoading(true);
         fetchData<CategoriesList>({

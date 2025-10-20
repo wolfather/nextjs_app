@@ -12,15 +12,12 @@ import { getTranslations } from 'next-intl/server';
 
 export default async function SalesPage({searchParams}: SalesPageParams) {
     const session = await getServerSession(authOptions);
-    const t = await getTranslations ('SalesPage');
     const resolvedParams = await searchParams;
+    const t = await getTranslations ('SalesPage');
 
     const queryString = Object
             .entries(resolvedParams ?? {})
-            .map(([k, v]) => {
-                return v !== undefined ? {[k]: v} : {}
-            });
-
+            .map(([k, v]) => v !== undefined ? {[k]: v} : {});
 
     const { data: salesData } = await fetchData<SalesData[]>({
         url: 'getSales',
@@ -39,10 +36,46 @@ export default async function SalesPage({searchParams}: SalesPageParams) {
         unit_price: formatCurrency(sale.unit_price),
         month: sale.month,
     }))
-    .filter(item => item.year === '2025')
+    //.filter(item => item.year === '2025')
     .sort((a, b) => a.month - b.month);
 
+    const totalSales = anualSales.reduce((prev, current) => {
+        const val = prev + current.total_revenue;
+        return val;
+    }, 0);
+    
+    const grossMargin = anualSales.reduce((prev, current) => {
+        const val = prev + current.gross_margin;
+        return val;
+    }, 0);
 
+    const paymentMethods = anualSales.reduce((acc, item: SalesData) => {
+        const { category, payment_methods } = item;
+        const cat = category
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/\s+/g, '')
+                    .toLowerCase();
+        if (!acc[cat]) {
+            acc[cat] = {
+                category: cat,
+                label: category,
+                payment_methods: {
+                    credit_card: 0,
+                    pix: 0,
+                    cash: 0
+                }
+            };
+        }
+
+        acc[cat].payment_methods.credit_card += payment_methods.credit_card || 0;
+        acc[cat].payment_methods.pix += payment_methods.pix || 0;
+        acc[cat].payment_methods.cash += payment_methods.cash || 0;
+
+        return acc;
+    }, {});
+    console.log({paymentMethods})
+    
     if (session === null) {
         redirect('/login');
     }
@@ -52,6 +85,36 @@ export default async function SalesPage({searchParams}: SalesPageParams) {
             <h1 className="text-3xl from-neutral-800 font-semibold">{t('title')}</h1>
 
             <SalesFilter />
+
+            <div className="flex justify-between gap-2">
+                <div className="w-1/3 rounded-l border-l-4 border-green-300 bg-green-100 py-2 px-4">
+                    <h3 className="font-bold text-xl mb-2">Total Revenues</h3>
+                    <p>{formatCurrency(totalSales)}</p>
+                </div>
+                
+                <div className="w-1/3 rounded-l border-l-4 border-green-300 bg-green-100 py-2 px-4">
+                    <h3 className="font-bold text-xl mb-2">Gross margin</h3>
+                    <p>{formatCurrency(grossMargin)}</p>
+                </div>
+
+                <div className="w-1/3 rounded-l border-l-4 border-green-300 bg-green-100 py-2 px-4">
+                    <h3 className="font-bold text-xl mb-2">Payment Methods</h3>
+                    {Object.values(paymentMethods).map(p => (
+                        <div
+                            className="mb-2" 
+                            key={p.category}>
+                            <p className="font-semibold text-lg">{p.label}</p>
+                            <div className="flex justify-between">
+                                {Object.entries(p.payment_methods).map(([k, v]) => (
+                                    <span className="justify-between" key={k}>
+                                        {k.replaceAll('_', ' ')}: {String(v)}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
             <section className="flex grid-cols-2 gap-4 h-[300px]">
                 <div className="min-h-[300px] min-w-[45%]">
                     <CustomBarChart data={anualSales} />
