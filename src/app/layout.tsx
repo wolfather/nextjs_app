@@ -8,6 +8,7 @@ import { BottomFooter } from "./components/Bottom_Footer/BottomFooter";
 import { geistSans, geistMono } from "@/fonts/fonts";
 import { NextIntlClientProvider } from 'next-intl'
 import "./globals.css";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,6 +28,7 @@ export default async function RootLayout({
           <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             <div className="flex flex-col h-screen">
                 <TopHeader />
+                <Sidebar />
                 {children}
                 <BottomFooter />
             </div>
