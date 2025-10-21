@@ -25,7 +25,7 @@ export function CustomBarChart({data}: BarChartProps) {
     })), [data]);
 
     return (
-        <div className="h-full">
+        <div className="h-full w-full min-h-[250px]">
             <ChartContainer config={chartConfig} className="min-h-[200px] h-full w-full">
                 <BarChart accessibilityLayer data={barData}>
                     <XAxis 

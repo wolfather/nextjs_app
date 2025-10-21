@@ -3,7 +3,7 @@
 import { SalesData } from "@/app/(logged)/sales/entities/sales.interface";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend } from "@/components/ui/chart";
 import { useMemo } from "react";
-import { PieChart, Pie, Cell } from "recharts";
+import { PieChart, Pie, Cell, Legend } from "recharts";
 
 type PieChartData = {
     data: SalesData[];
@@ -31,38 +31,44 @@ export function CustomPieChart({data}: PieChartData) {
 
     function ChartLegendContent() {
         return (
-            <div className="flex gap-4 justify-center mt-2">
+            <div className="flex flex-col h-full">
             {pieData.map((entry, index) => (
-                <div key={entry.name} className="flex items-center gap-1">
-                <span
-                    style={{
-                    backgroundColor: COLORS[index % COLORS.length],
-                    width: 12,
-                    height: 12,
-                    display: 'inline-block',
-                    borderRadius: '50%',
-                    }}
-                />
-                <span>{entry.name}</span>
+                <div key={entry.name} className="flex gap-1">
+                    <span
+                        style={{
+                        backgroundColor: COLORS[index % COLORS.length],
+                        width: 12,
+                        height: 12,
+                        display: 'inline-block',
+                        borderRadius: '50%',
+                        }}
+                    />
+                    <span>{entry.name}</span>
                 </div>
             ))}
             </div>
         );
-        }
+    }
+
     return (
-        <div className="h-full">
+        <div className="h-full w-full max-sm:w-fit items-center max-sm:flex max-sm:justify-between">
             <ChartContainer config={chartConfig} className="h-full w-full">
                 <PieChart width={330} height={180} accessibilityLayer data={data}>
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <ChartLegend content={<ChartLegendContent />} />
                     <Pie data={pieData} dataKey="sales" nameKey="name" outerRadius={120}>
                         {pieData.map((_, index: number) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length] || '#ccc'} />
                         ))}
                     </Pie>
-                    <ChartLegendContent />
+                    <Legend
+                        layout="vertical"
+                        align="right"
+                        verticalAlign="middle"
+                        wrapperStyle={{ paddingLeft: 25 }}
+                        content={<ChartLegendContent />}
+                    />
                 </PieChart>
             </ChartContainer>
         </div>
-    )
+    );
 }

@@ -50,7 +50,7 @@ export function Sidebar() {
     return (
         <aside 
             aria-expanded={toggleState ? true : false}
-            className={`${toggleState ? 'animate-grow w-2/6 p-3' : 'animate-grow w-[2px]'} bg-gray-400 absolute h-full z-10 shadow-black-800 shadow-lg/30 transition-all duration-100`}>
+            className={`${toggleState ? 'animate-grow w-2/6 p-3' : 'animate-grow w-0'} bg-gray-400 absolute h-full z-10 shadow-black-800 shadow-lg/30 transition-all duration-100`}>
             <div className="overflow-hidden">
                 <button
                     aria-label={toggleState ? 'opened' : 'closed'}
