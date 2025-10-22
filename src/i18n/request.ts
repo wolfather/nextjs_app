@@ -8,7 +8,8 @@ export const locales = ["en-US", "pt-BR"];
 export default getRequestConfig(async () => {
   const store = await cookies()
   const locale = store.get('locale')?.value || 'pt-BR';
-  if (!locales.includes(locale as any)) notFound();
+
+  if (!locales.includes(locale)) notFound();
 
   return {
     locale,

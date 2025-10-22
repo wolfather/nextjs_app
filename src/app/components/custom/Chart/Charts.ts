@@ -1,3 +1,3 @@
 
 export { CustomBarChart } from "./Bar";
-export { CustomPieChart } from "./Pie";
+export { CustomPieChart } from "./Pie/Pie";

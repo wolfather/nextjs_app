@@ -1,6 +1,6 @@
-'use client' // Error boundaries must be Client Components
+'use client';
  
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
  
 export default function Error({
   error,
@@ -9,20 +9,15 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const errorHandler = useCallback(() => console.error(error), [error]);
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error)
-  }, [error])
+    errorHandler()
+  }, [errorHandler]);
  
   return (
     <div>
       <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
+      <button onClick={() => reset()}>
         Try again
       </button>
     </div>

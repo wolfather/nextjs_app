@@ -1,4 +1,4 @@
-export default async function PublicHome() {
+export default async function Contact() {
 
     return (
         <div>
