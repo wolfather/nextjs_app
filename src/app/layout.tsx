@@ -9,9 +9,6 @@ import { geistSans, geistMono } from "@/fonts/fonts";
 import { NextIntlClientProvider } from 'next-intl'
 import "./globals.css";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { FallbackErrorBoundary } from "./components/FallbackErrorBoundary/FallbackErrorBoundary";
-
 
 export const metadata: Metadata = {
   title: "Create Next App",

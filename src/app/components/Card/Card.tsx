@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { memo, useMemo, type HTMLAttributes, type ReactNode } from "react";
+import { memo, type HTMLAttributes, type ReactNode } from "react";
 
 type CardProps = HTMLAttributes<HTMLDivElement> & {
     title: string,
@@ -27,4 +27,4 @@ function CardComponent({title, children, type = 'none', ...rest}: CardProps) {
     );
 }
 
-export const Card = memo(CardComponent);
+export const Card = memo(CardComponent) as typeof CardComponent;

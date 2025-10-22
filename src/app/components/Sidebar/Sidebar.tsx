@@ -49,11 +49,13 @@ export function Sidebar() {
 
     return (
         <aside 
-            aria-expanded={toggleState ? true : false}
+            role='navigation'
+            aria-label='User info'
             className={`${toggleState ? 'animate-grow w-2/6 p-3' : 'animate-grow w-0'} bg-gray-400 absolute h-full z-10 shadow-black-800 shadow-lg/30 transition-all duration-100`}>
             <div className="overflow-hidden">
                 <button
-                    aria-label={toggleState ? 'opened' : 'closed'}
+                    aria-expanded={toggleState}
+                    aria-controls='user-sidebar'
                     className="text-right cursor-pointer absolute top-1 right-[-50px] w-[80px] p-2 h-[40px] bg-gray-400 rounded-r-2xl"
                     onClick={() => setToggleState(prev => !prev)}>
                     {toggleState ? '<' : '>'}
